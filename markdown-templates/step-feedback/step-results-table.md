@@ -11,10 +11,10 @@
 {%- endif %}
 
 {%- if all_passed %}
-<img src="https://octodex.github.com/images/inflatocat.png" align="right" height="150px" alt="Inflatocat image indicating the step passed" />
+<img src="https://raw.githubusercontent.com/thealbertdev/masb-course-toolkit/v1/markdown-templates/images/thealbertdevbot_square_transparent.png" align="right" height="80px" />
 {%- else %}
 
-<img src="https://octodex.github.com/images/spidertocat.png" align="right" height="100px" alt="Spidertocat image indicating the step failed" />
+<img src="https://raw.githubusercontent.com/thealbertdev/masb-course-toolkit/v1/markdown-templates/images/thealbertdevbot_square_transparent.png" align="right" height="80px" />
 Some checks failed. Please review the results below and try again.
 
 Time to find the bug! 🤔

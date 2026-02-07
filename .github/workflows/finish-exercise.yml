@@ -16,13 +16,18 @@ on:
         required: false
         type: boolean
         default: true
+    secrets:
+      THEALBERTDEVBOT_APP_ID:
+        required: true
+      THEALBERTDEVBOT_SECRET_KEY:
+        required: true
 
 permissions:
   contents: write
   issues: write
 
 env:
-  EXERCISE_TOOLKIT_REF: 769391b9f9a2f69a9df9bb92b677c5e0922213ac
+  EXERCISE_TOOLKIT_REF: V1
 
 jobs:
   update_readme:
@@ -31,23 +36,32 @@ jobs:
     if: inputs.update-readme-with-congratulations
 
     steps:
+      - name: Get GitHub App token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with: 
+          app-id: ${{ secrets.THEALBERTDEVBOT_APP_ID }}
+          private-key: ${{ secrets.THEALBERTDEVBOT_SECRET_KEY }}
+          owner: ${{ github.repository_owner }}
       - name: Checkout
         uses: actions/checkout@v6
         with:
+          token: ${{ steps.app-token.outputs.token }}
           ref: ${{ github.event.repository.default_branch }}
 
       - name: Get response templates
         uses: actions/checkout@v6
         with:
-          repository: skills/exercise-toolkit
-          path: exercise-toolkit
+          token: ${{ steps.app-token.outputs.token }}
+          repository: thealbertdev/masb-course-toolkit
+          path: masb-course-toolkit
           ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
       - name: Build congratulations message from template
         id: build-new-readme
         uses: skills/action-text-variables@v3
         with:
-          template-file: exercise-toolkit/markdown-templates/readme/exercise-finished.md
+          template-file: masb-course-toolkit/markdown-templates/readme/exercise-finished.md
           template-vars: |
             login: ${{ github.actor }}
             issue_url: ${{ inputs.issue-url }}
@@ -71,18 +85,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get GitHub App token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with: 
+          app-id: ${{ secrets.THEALBERTDEVBOT_APP_ID }}
+          private-key: ${{ secrets.THEALBERTDEVBOT_SECRET_KEY }}
+          owner: ${{ github.repository_owner }}
       - name: Get response templates
         uses: actions/checkout@v6
         with:
-          repository: skills/exercise-toolkit
-          path: exercise-toolkit
+          token: ${{ steps.app-token.outputs.token }}
+          repository: thealbertdev/masb-course-toolkit
+          path: masb-course-toolkit
           ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
       - name: Build message - exercise finished
         id: build-finish-message
         uses: skills/action-text-variables@v3
         with:
-          template-file: exercise-toolkit/markdown-templates/step-feedback/exercise-finished.md
+          template-file: masb-course-toolkit/markdown-templates/step-feedback/exercise-finished.md
           template-vars: |
             login: ${{ github.actor }}
             repo_full_name: ${{ github.repository }}
@@ -91,9 +113,9 @@ jobs:
           gh issue comment "${{ inputs.issue-url }}" \
             --body "${{ steps.build-finish-message.outputs.updated-text }}"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Close issue
         run: gh issue close "${{ inputs.issue-url }}"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}

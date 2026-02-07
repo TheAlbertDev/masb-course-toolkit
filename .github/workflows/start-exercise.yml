@@ -23,14 +23,19 @@ on:
       issue-number:
         description: "Number of the created issue"
         value: ${{ jobs.create_exercise.outputs.issue-number }}
+    secrets:
+      THEALBERTDEVBOT_APP_ID:
+        required: true
+      THEALBERTDEVBOT_SECRET_KEY:
+        required: true
 
 permissions:
-  contents: write # Update Readme
-  actions: write # Disable workflows
-  issues: write # Create issue
+  contents: write
+  actions: write
+  issues: write
 
 env:
-  EXERCISE_TOOLKIT_REF: 769391b9f9a2f69a9df9bb92b677c5e0922213ac
+  EXERCISE_TOOLKIT_REF: v1
 
 jobs:
   disable_workflows:
@@ -38,9 +43,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Get GitHub App token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with: 
+          app-id: ${{ secrets.THEALBERTDEVBOT_APP_ID }}
+          private-key: ${{ secrets.THEALBERTDEVBOT_SECRET_KEY }}
+          owner: ${{ github.repository_owner }}
+          
       - uses: actions/checkout@v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Disable all exercise workflows
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           # Find all workflow files that start with a number (0-9)
           workflows=$(git ls-files | grep -E '^\.github/workflows/[0-9].*\.(yml|yaml)$')
@@ -49,8 +66,6 @@ jobs:
             echo "Disabling workflow: $workflow_name"
             gh workflow disable "$workflow_name" || true
           done
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create_exercise:
     name: Create exercise issue
@@ -61,17 +76,27 @@ jobs:
       issue-number: ${{ steps.create-issue.outputs.ISSUE_NUMBER }}
 
     steps:
+      - name: Get GitHub App token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with: 
+          app-id: ${{ secrets.THEALBERTDEVBOT_APP_ID }}
+          private-key: ${{ secrets.THEALBERTDEVBOT_SECRET_KEY }}
+          owner: ${{ github.repository_owner }}
+
       - name: Get response templates
         uses: actions/checkout@v6
         with:
-          repository: skills/exercise-toolkit
-          path: exercise-toolkit
+          token: ${{ steps.app-token.outputs.token }}
+          repository: thealbertdev/masb-course-toolkit
+          path: masb-course-toolkit
           ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
       - name: Get template repository
         id: get-template-repo
         uses: actions/github-script@v8
         with:
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const { data: repo } = await github.rest.repos.get({
               owner: context.repo.owner,
@@ -90,7 +115,7 @@ jobs:
         id: build-issue-description
         uses: skills/action-text-variables@v3
         with:
-          template-file: exercise-toolkit/markdown-templates/step-feedback/welcome.md
+          template-file: masb-course-toolkit/markdown-templates/step-feedback/welcome.md
           template-vars: |
             title: ${{ inputs.exercise-title }}
             login: ${{ github.actor }}
@@ -101,6 +126,7 @@ jobs:
         id: create-issue
         uses: actions/github-script@v8
         with:
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const { data: issue } = await github.rest.issues.create({
               owner: context.repo.owner,
@@ -121,20 +147,31 @@ jobs:
     needs: create_exercise
 
     steps:
+      - name: Get GitHub App token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with: 
+          app-id: ${{ secrets.THEALBERTDEVBOT_APP_ID }}
+          private-key: ${{ secrets.THEALBERTDEVBOT_SECRET_KEY }}
+          owner: ${{ github.repository_owner }}
+
       - uses: actions/checkout@v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Get response templates
         uses: actions/checkout@v6
         with:
-          repository: skills/exercise-toolkit
-          path: exercise-toolkit
+          token: ${{ steps.app-token.outputs.token }}
+          repository: thealbertdev/masb-course-toolkit
+          path: masb-course-toolkit
           ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
       - name: Build welcome message from template
         id: build-new-readme
         uses: skills/action-text-variables@v3
         with:
-          template-file: exercise-toolkit/markdown-templates/readme/exercise-started.md
+          template-file: masb-course-toolkit/markdown-templates/readme/exercise-started.md
           template-vars: |
             title: ${{ inputs.exercise-title }}
             login: ${{ github.actor }}

@@ -1,10 +1,10 @@
-# Skills Exercises Toolkit :hammer_and_wrench:
+# MASB Course Exercises Toolkit :hammer_and_wrench:
 
 <p align="center">
-  <img src="https://octodex.github.com/images/manufacturetocat.png" alt="Manufacturetocat" width="300" />
+  <img src="https://raw.githubusercontent.com/thealbertdev/masb-course-toolkit/v1/markdown-templates/images/thealbertdevbot_square_transparent.png" alt="Manufacturetocat" width="300" />
 </p>
 
-- [Skills Exercises Toolkit :hammer\_and\_wrench:](#skills-exercises-toolkit-hammer_and_wrench)
+- [MASB Course Exercises Toolkit :hammer\_and\_wrench:](#masb-course-exercises-toolkit-hammer_and_wrench)
   - [Purpose](#purpose)
     - [Contents](#contents)
   - [Examples](#examples)
@@ -18,13 +18,13 @@
 
 ## Purpose
 
-This repository serves as a comprehensive toolkit for creating and managing GitHub Skills exercises. It provides a collection of tools, templates, and utilities designed to streamline the process of developing educational content for GitHub Skills.
+This repository serves as a comprehensive toolkit for creating and managing MASB Course exercises. It provides a collection of tools, templates, and utilities designed to streamline the process of developing educational content for MASB Course.
 
 ### Contents
 
-- **[.github/workflows](/.github/workflows)**: GitHub Actions workflows for automating common parts of Skills Exercises
+- **[.github/workflows](/.github/workflows)**: GitHub Actions workflows for automating common parts of MASB Course Exercises
 - **[markdown-templates](/markdown-templates)**: Ready-to-use Markdown templates for creating consistent exercise documentation, instructions, and README files
-- **[actions](/actions)**: Simple composite actions to help when building GitHub Skills exercises
+- **[actions](/actions)**: Simple composite actions to help when building MASB Course exercises
 
 
 ## Examples
@@ -39,7 +39,7 @@ For a full list of reusable workflows go to the **[.github/workflows](/.github/w
 jobs:
   start_exercise:
     name: Start Exercise
-    uses: skills/exercise-toolkit/.github/workflows/start-exercise.yml@<git-tag>
+    uses: thealbertdev/masb-course-toolkit/.github/workflows/start-exercise.yml@<git-tag>
     with:
       exercise-title: "Introduction to GitHub Copilot"
       intro-message: "Let's get you started with GitHub Copilot :robot: ! We will learn ..."
@@ -51,7 +51,7 @@ jobs:
 jobs:
   find_exercise:
     name: Find Exercise Issue
-    uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@<git-tag>
+    uses: thealbertdev/masb-course-toolkit/.github/workflows/find-exercise-issue.yml@<git-tag>
 ```
 
 ### 📋 Markdown Templates
@@ -61,15 +61,15 @@ For a full list of markdown templates go to the **[markdown-templates](/markdown
 ```yaml
 steps:
   - name: Get markdown templates
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
     with:
-      repository: skills/exercise-toolkit
-      path: exercise-toolkit
+      repository: thealbertdev/masb-course-toolkit
+      path: masb-course-toolkit
       ref: <git-tag>
 
   - name: Use the template
     run: |
-      cat exercise-toolkit/markdown-templates/step-feedback/checking-work.md
+      cat masb-course-toolkit/markdown-templates/step-feedback/checking-work.md
 ```
 
 #### Using with GrantBirki/comment for issue comments
@@ -79,16 +79,16 @@ Templates are often used with [GrantBirki/comment](https://github.com/GrantBirki
 ```yaml
 steps:
   - name: Get markdown templates
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
     with:
-      repository: skills/exercise-toolkit
-      path: exercise-toolkit
+      repository: thealbertdev/masb-course-toolkit
+      path: masb-course-toolkit
       ref: <git-tag>
 
   - name: Create comment - step finished
     uses: GrantBirki/comment@v2.1.1
     with:
-      file: exercise-toolkit/markdown-templates/step-feedback/step-finished-prepare-next-step.md
+      file: masb-course-toolkit/markdown-templates/step-feedback/step-finished-prepare-next-step.md
       issue-number: ${{ env.ISSUE_NUMBER }}
       repository: ${{ env.ISSUE_REPOSITORY }}
       vars: |
@@ -102,17 +102,17 @@ Markdown templates can also be used with [skills/action-text-variables](https://
 ```yaml
 steps:
   - name: Get markdown templates
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
     with:
-      repository: skills/exercise-toolkit
-      path: exercise-toolkit
+      repository: thealbertdev/masb-course-toolkit
+      path: masb-course-toolkit
       ref: <git-tag>
 
   - name: Build README from template
     id: build-readme
     uses: skills/action-text-variables@v3
     with:
-      template-file: exercise-toolkit/markdown-templates/readme/exercise-started.md
+      template-file: masb-course-toolkit/markdown-templates/readme/exercise-started.md
       template-vars: |
         title: ${{ inputs.exercise-title }}
         login: ${{ github.actor }}
@@ -126,7 +126,7 @@ steps:
 
 ## Notable Resources
 
-These GitHub Actions are particularly useful when creating GitHub Skills Exercises:
+These GitHub Actions are particularly useful when creating MASB Course Exercises:
 
 - **[skills/action-text-variables](https://github.com/skills/action-text-variables)**: Replace variables in template files with dynamic content
 - **[skills/action-keyphrase-checker](https://github.com/skills/action-keyphrase-checker)**: Verify if specific keyphrases exist in files or content

@@ -1,10 +1,10 @@
 # {{ title }}
 
-<img src="https://octodex.github.com/images/Professortocat_v2.png" align="right" height="200px" />
+<img alt="original github octocat" src="https://raw.githubusercontent.com/thealbertdev/masb-course-toolkit/v1/markdown-templates/images/thealbertdevbot_square_transparent.png" align="right" height="80px" />
 
 Hey {{ login }}!
 
-Mona here. I'm done preparing your exercise. Hope you enjoy! 💚
+TheAlbertDevBot here. I'm done preparing your exercise. Hope you enjoy! 💚
 
 Remember, it's self-paced so feel free to take a break! ☕️
 
@@ -12,4 +12,4 @@ Remember, it's self-paced so feel free to take a break! ☕️
 
 ---
 
-&copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
+&copy; 2026 TheAlbertDev &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)

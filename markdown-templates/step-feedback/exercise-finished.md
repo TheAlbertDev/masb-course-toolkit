@@ -1,4 +1,4 @@
-<img src="https://octodex.github.com/images/welcometocat.png" align="left" height="150px" />
+<img src="https://raw.githubusercontent.com/thealbertdev/masb-course-toolkit/v1/markdown-templates/images/thealbertdevbot_square_transparent.png" align="left" height="80px" />
 
 Congratulations @{{ login }}! You finished the exercise! 🎉🎉🎉
 

@@ -1,6 +1,6 @@
-# Skills Exercises Markdown Templates
+# MASB Course Exercises Markdown Templates
 
-A collection of templates for use in Skills exercises.
+A collection of templates for use in MASB Course exercises.
 
 ## Template Collections
 
