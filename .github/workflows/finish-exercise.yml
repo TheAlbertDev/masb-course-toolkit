@@ -25,9 +25,10 @@ on:
 permissions:
   contents: write
   issues: write
+  pull-requests: write
 
 env:
-  EXERCISE_TOOLKIT_REF: V1
+  EXERCISE_TOOLKIT_REF: v1
 
 jobs:
   update_readme:
@@ -107,7 +108,7 @@ jobs:
           template-file: masb-course-toolkit/markdown-templates/step-feedback/exercise-finished.md
           template-vars: |
             login: ${{ github.actor }}
-            repo_full_name: ${{ github.repository }}
+            repo_full_name: https://github.com/${{ github.repository }}
       - name: Create comment - exercise finished
         run: |
           gh issue comment "${{ inputs.issue-url }}" \
